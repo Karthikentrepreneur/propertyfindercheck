@@ -1,0 +1,5 @@
+{
+  "name": "PalmView AI - Property Scraper & Analyzer",
+  "description": "A high-end real estate analysis tool that extracts and analyzes property details from links using Gemini's search grounding capabilities.",
+  "requestFramePermissions": []
+}
