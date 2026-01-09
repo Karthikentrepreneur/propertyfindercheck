@@ -3,7 +3,8 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { PropertyDetails } from "../types";
 
 export const analyzePropertyLink = async (url: string): Promise<PropertyDetails> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const apiKey = (process.env.API_KEY as string) || '';
+  const ai = new GoogleGenAI({ apiKey });
   
   const prompt = `
     Analyze the following property listing URL: ${url}
@@ -73,7 +74,8 @@ export const analyzePropertyLink = async (url: string): Promise<PropertyDetails>
       }
     });
 
-    const result = JSON.parse(response.text);
+    const responseText = response.text || "{}";
+    const result = JSON.parse(responseText);
     
     // Extract sources from grounding metadata if available
     const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
