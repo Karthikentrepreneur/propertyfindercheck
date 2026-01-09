@@ -1,10 +1,9 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 import { PropertyDetails } from "../types";
 
 export const analyzePropertyLink = async (url: string): Promise<PropertyDetails> => {
-  const apiKey = (process.env.API_KEY as string) || '';
-  const ai = new GoogleGenAI({ apiKey });
+  // Accessing the API key exclusively via process.env as per requirements
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
   
   const prompt = `
     Analyze the following property listing URL: ${url}
