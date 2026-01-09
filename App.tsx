@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { analyzePropertyLink } from './services/geminiService';
 import { ScraperState } from './types';
@@ -26,9 +25,16 @@ const App: React.FC = () => {
         data: result
       });
     } catch (err: any) {
+      let message = err.message || "An unexpected error occurred while analyzing the property.";
+      
+      // Specific check for 429 Resource Exhausted
+      if (message.includes('429') || message.includes('quota') || message.includes('RESOURCE_EXHAUSTED')) {
+        message = "The Gemini API quota for this key has been reached. Please try again later or check your Google Cloud billing settings.";
+      }
+
       setState({
         isLoading: false,
-        error: err.message || "An unexpected error occurred while analyzing the property.",
+        error: message,
         data: null
       });
     }
@@ -108,7 +114,9 @@ const App: React.FC = () => {
           {/* Featured Link Badge */}
           <div className="flex flex-wrap justify-center gap-4 mt-6">
             <button 
-              onClick={() => setUrl('https://www.propertyfinder.ae/en/plp/buy/villa-for-sale-dubai-palm-jumeirah-signature-villas-signature-villas-frond-p-15946332.html')}
+              onClick={() => {
+                setUrl('https://www.propertyfinder.ae/en/plp/buy/villa-for-sale-dubai-palm-jumeirah-signature-villas-signature-villas-frond-p-15946332.html');
+              }}
               className="text-xs font-semibold px-4 py-2 rounded-full border border-slate-700 text-slate-400 hover:border-amber-500/50 hover:text-amber-500 transition-all flex items-center gap-2"
             >
               <i className="fa-solid fa-bolt-lightning text-amber-500"></i>
